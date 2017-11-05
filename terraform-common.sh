@@ -52,7 +52,7 @@ init_terraform_backend() {
 
   ACCOUNT_ID="$(run_awscli sts get-caller-identity --query Account --output text | tr -d '\r')"
   AWS_REGION="eu-west-1"
-  BUCKET_NAME="terraform-tfstate-${ACCOUNT_ID}"
+	BUCKET_NAME="terraform-tfstate-$(echo "${ACCOUNT_ID}" | shasum | cut -f 1 -d " ")"
   DYNAMODB_TABLE="terraform_locks"
 
   echo "Creating bucket ${BUCKET_NAME} and dynamodb table if missing:"
@@ -76,9 +76,9 @@ init_terraform_backend() {
       --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
 
   cat <<EOF > "${TF_BACKEND_CONFIG}"
-  terraform {
-    backend "s3" {
-    bucket         = "terraform-tfstate-${ACCOUNT_ID}"
+terraform {
+  backend "s3" {
+    bucket         = "${BUCKET_NAME}"
     key            = "${PROJECT_NAME}.tfstate"
     region         = "${AWS_REGION}"
     dynamodb_table = "${DYNAMODB_TABLE}"

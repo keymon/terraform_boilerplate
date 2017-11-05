@@ -1,6 +1,6 @@
 FROM python:3-alpine
 
-ENV TERRAFORM_VERSION=0.10.7
+ENV TERRAFORM_VERSION=0.10.8
 ENV AWSCLI_VERSION=1.11.162
 
 RUN apk add --no-cache --update ca-certificates openssl curl && \

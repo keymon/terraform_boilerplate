@@ -28,6 +28,28 @@ Gotchas
    `provider.tf` and/or `terraform-vars.sh`
  - export the variable `DISABLE_DOCKER=1` to use `awscli` and `terraform` directly.
 
+Importing this repo into another
+--------------------------------
+
+You can clone this repo into a subdirectory of other repo, by simply following
+the following process (Originally [suggested here](https://stackoverflow.com/a/1684694/395686)):
+
+   TARGET_DIRECTORY=somedir # Change to the actual target in the current directory
+   TARGET_DIRECTORY=aws # Change to the actual target in the current directory
+
+   git remote add terraform_boilerplate https://github.com/keymon/terraform_boilerplate
+   git fetch terraform_boilerplate
+   git checkout -b terraform_boilerplate_tmp terraform_boilerplate/master
+   mkdir -p ${TARGET_DIRECTORY}
+   git ls-files | cut -f 1 -d / | sort | uniq | \
+      xargs -n1 -I {} git mv "{}" "${TARGET_DIRECTORY}/{}"
+   git commit -m "Moving all terraform_boilerplate to ${TARGET_DIRECTORY}"
+   git checkout master
+   git merge terraform_boilerplate_tmp --allow-unrelated-histories
+   git remote rm terraform_boilerplate
+   git branch -d terraform_boilerplate_tmp
+
+
 Clean up
 --------
 

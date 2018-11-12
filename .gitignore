@@ -1,3 +1,2 @@
 terraform.tfstate*
 .terraform
-backend_config.tf

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e -u -o pipefail
 
 cd "$(dirname "$0")"
@@ -8,12 +8,8 @@ cd "$(dirname "$0")"
 
 case "${1:-}" in
   init-backend)
-    init_terraform_backend
-    ;;
-  init)
-    init_terraform_backend
-    run_terraform init
-    run_terraform get
+    shift
+    init_terraform_backend "$@"
     ;;
   *)
     run_terraform "$@"
